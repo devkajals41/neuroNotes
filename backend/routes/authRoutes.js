@@ -1,47 +1,27 @@
-// ==========================================
-// AUTH ROUTES
-// ==========================================
-
-// Express Router helps us create routes
-// in separate files instead of putting
-// everything inside server.js
-
 import express from "express";
 
-
-// Import controller functions
+console.log("AUTH ROUTES LOADED");
 
 import {
   registerUser,
   loginUser,
 } from "../controllers/authController.js";
 
-
-// Create router object
-
 const router = express.Router();
 
+// Test Route
+router.get("/test", (req, res) => {
+  res.json({
+    success: true,
+    message: "Auth routes working",
+  });
+});
 
-// ==========================================
-// REGISTER ROUTE
-// ==========================================
-
-// POST /api/auth/register
-
+// Register User
 router.post("/register", registerUser);
 
 
-
-// ==========================================
-// LOGIN ROUTE
-// ==========================================
-
-// POST /api/auth/login
-
+// Login User
 router.post("/login", loginUser);
-
-
-
-// Export router
 
 export default router;
