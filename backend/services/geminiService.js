@@ -92,3 +92,42 @@ ${noteContent}
 
   return result.response.text();
 };
+
+export const generateKnowledgeGraph = async (noteContent) => {
+  const model = genAI.getGenerativeModel({
+    model: "gemini-2.5-flash-lite",
+  });
+
+  const prompt = `
+Analyze the note and return ONLY JSON.
+
+Format:
+
+{
+  "nodes": [
+    "React",
+    "Hooks",
+    "useState"
+  ],
+  "edges": [
+    {
+      "source": "React",
+      "target": "Hooks",
+      "label": "uses"
+    },
+    {
+      "source": "Hooks",
+      "target": "useState",
+      "label": "contains"
+    }
+  ]
+}
+
+Note:
+${noteContent}
+`;
+
+  const result = await model.generateContent(prompt);
+
+  return result.response.text();
+};

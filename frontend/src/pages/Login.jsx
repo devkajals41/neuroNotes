@@ -20,22 +20,14 @@ function Login() {
       console.log("Login Success:", data);
 
       // Save JWT token in browser
-      localStorage.setItem(
-        "token",
-        data.token
-      );
+      localStorage.setItem("token", data.token);
 
       alert("Login Successful!");
 
       // Go to Dashboard
       navigate("/dashboard");
-
     } catch (error) {
-
-      console.log(
-        "Login Error:",
-        error.response?.data || error.message
-      );
+      console.log("Login Error:", error.response?.data || error.message);
 
       alert("Login Failed!");
     }
@@ -50,9 +42,7 @@ function Login() {
           type="email"
           placeholder="Enter email"
           value={email}
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <br />
@@ -62,17 +52,13 @@ function Login() {
           type="password"
           placeholder="Enter password"
           value={password}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <br />
         <br />
 
-        <button type="submit">
-          Login
-        </button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );

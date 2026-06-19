@@ -19,35 +19,24 @@ export const getNotes = async () => {
 export const createNote = async (noteData) => {
   const token = localStorage.getItem("token");
 
-  const response = await axios.post(
-    API_URL,
-    noteData,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await axios.post(API_URL, noteData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   return response.data;
 };
 
 // Update note
-export const updateNote = async (
-  id,
-  noteData
-) => {
+export const updateNote = async (id, noteData) => {
   const token = localStorage.getItem("token");
 
-  const response = await axios.put(
-    `${API_URL}/${id}`,
-    noteData,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await axios.put(`${API_URL}/${id}`, noteData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   return response.data;
 };
@@ -56,14 +45,11 @@ export const updateNote = async (
 export const deleteNote = async (id) => {
   const token = localStorage.getItem("token");
 
-  const response = await axios.delete(
-    `${API_URL}/${id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await axios.delete(`${API_URL}/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   return response.data;
 };

@@ -6,24 +6,20 @@ function ConceptMap({ concepts }) {
     return null;
   }
 
-  const nodes = concepts.map(
-    (concept, index) => ({
-      id: String(index + 1),
-      data: { label: concept },
-      position: {
-        x: 250,
-        y: index * 100,
-      },
-    })
-  );
+  const nodes = concepts.map((concept, index) => ({
+    id: String(index + 1),
+    data: { label: concept },
+    position: {
+      x: 250,
+      y: index * 100,
+    },
+  }));
 
-  const edges = concepts
-    .slice(1)
-    .map((_, index) => ({
-      id: `e${index + 1}-${index + 2}`,
-      source: String(index + 1),
-      target: String(index + 2),
-    }));
+  const edges = concepts.slice(1).map((_, index) => ({
+    id: `e${index + 1}-${index + 2}`,
+    source: String(index + 1),
+    target: String(index + 2),
+  }));
 
   return (
     <div
@@ -32,10 +28,7 @@ function ConceptMap({ concepts }) {
         height: "500px",
       }}
     >
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-      />
+      <ReactFlow nodes={nodes} edges={edges} />
     </div>
   );
 }
