@@ -1,6 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {
+  useNavigate,
+  Link,
+} from "react-router-dom";
+
 import { loginUser } from "../services/authService";
+import "./Auth.css";
+import { FaBrain } from "react-icons/fa";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -22,7 +28,7 @@ function Login() {
       // Save JWT token in browser
       localStorage.setItem("token", data.token);
 
-      alert("Login Successful!");
+      
 
       // Go to Dashboard
       navigate("/dashboard");
@@ -34,34 +40,56 @@ function Login() {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+  <div className="auth-container">
+    <div className="auth-card">
+
+      <h1 className="auth-title">
+        <FaBrain /> NeuroNotes
+      </h1>
 
       <form onSubmit={handleSubmit}>
         <input
+          className="auth-input"
           type="email"
-          placeholder="Enter email"
+          placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) =>
+            setEmail(e.target.value)
+          }
         />
-
-        <br />
-        <br />
 
         <input
+          className="auth-input"
           type="password"
-          placeholder="Enter password"
+          placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) =>
+            setPassword(e.target.value)
+          }
         />
 
-        <br />
-        <br />
-
-        <button type="submit">Login</button>
+        <button
+          className="auth-button"
+          type="submit"
+        >
+          Login
+        </button>
+        <p
+  style={{
+    textAlign: "center",
+    marginTop: "15px",
+  }}
+>
+  Don't have an account?{" "}
+  <Link to="/register">
+    Register
+  </Link>
+</p>
       </form>
+
     </div>
-  );
+  </div>
+);
 }
 
 export default Login;

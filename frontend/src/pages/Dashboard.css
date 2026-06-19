@@ -1,0 +1,345 @@
+:root {
+  --primary: #6366f1;     /* Indigo */
+  --secondary: #8b5cf6;   /* Purple */
+  --accent: #06b6d4;      /* Cyan */
+  --success: #10b981;
+  --danger: #f43f5e;
+
+  --bg: #f8fafc;
+  --card: #ffffff;
+
+  --text: #0f172a;
+  --muted: #64748b;
+}
+
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: "Inter", sans-serif;
+}
+
+.sidebar {
+  width: 320px;
+
+  background: white;
+
+  border-right: 1px solid #e5e7eb;
+
+  padding: 25px;
+
+  overflow-y: auto;
+
+  box-shadow: 4px 0 20px
+    rgba(0, 0, 0, 0.04);
+}
+
+.logo {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--primary);
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding-bottom: 20px;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  margin-bottom: 25px;
+
+  position: sticky;
+  top: 0;
+
+  background: white;
+
+  z-index: 10;
+
+  font-family: "Space Grotesk",
+    sans-serif;
+}
+
+.search-box {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  outline: none;
+}
+
+.search-box:focus {
+  border-color: var(--primary);
+box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.note-card {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 12px;
+  cursor: pointer;
+  transition: 0.25s ease;
+  border: 1px solid transparent;
+}
+
+.note-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(
+  135deg,
+  rgba(99, 102, 241, 0.03),
+  rgba(139, 92, 246, 0.03)
+);
+}
+
+.main {
+  flex: 1;
+  padding: 35px;
+  overflow-y: auto;
+}
+
+.main h1 {
+  margin-bottom: 10px;
+  color: var(--text);
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.section {
+  background: var(--card);
+  padding: 28px;
+  border-radius: 22px;
+  margin-bottom: 25px;
+
+  border: 1px solid rgba(99, 102, 241, 0.08);
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.05);
+
+  transition: all 0.3s ease;
+}
+
+.section h2 {
+  margin-bottom: 15px;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  margin-top: 10px;
+  outline: none;
+}
+
+textarea {
+  min-height: 400px;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #4f46e5;
+}
+
+textarea {
+  resize: vertical;
+}
+
+button {
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    var(--secondary)
+  );
+
+  color: white;
+
+  border: none;
+
+  padding: 12px 20px;
+
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  font-weight: 600;
+
+  transition: all 0.25s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 20px rgba(99, 102, 241, 0.25);
+}
+
+button:hover {
+  background: #4338ca;
+  transform: translateY(-2px);
+}
+
+.ai-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+@media (max-width: 900px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+}
+
+
+
+.note-card.active {
+  border: 2px solid var(--primary);
+
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.08),
+    rgba(139, 92, 246, 0.08)
+  );
+
+  transform: scale(1.02);
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.tab-btn.active {
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    var(--secondary)
+  );
+
+  color: white;
+}
+
+.dictionary-box {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.dictionary-box input {
+  flex: 1;
+}
+
+.dictionary-box button {
+  min-width: 120px;
+}
+
+.section {
+  transition: 0.3s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.logo,
+.main h1,
+.section h2 {
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-top: -10px;
+}
+
+.logout-btn {
+  background: white;
+  color: var(--primary);
+
+  border: 1px solid
+    rgba(99, 102, 241, 0.2);
+
+  border-radius: 14px;
+
+  padding: 12px 20px;
+
+  font-weight: 600;
+
+  transition: all 0.25s ease;
+}
+
+.logout-btn:hover {
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    var(--secondary)
+  );
+
+  color: white;
+
+  border-color: transparent;
+
+  box-shadow:
+    0 10px 20px
+      rgba(99, 102, 241, 0.25);
+}
+
+
+
+.subtitle {
+  color: var(--muted);
+  margin-top: -10px;
+  font-size: 15px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #eef2ff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    var(--primary),
+    var(--secondary)
+  );
+
+  border-radius: 10px;
+}
