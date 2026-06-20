@@ -1,17 +1,27 @@
-import "./Dashboard.css";
-import { useEffect, useState } from "react";
+import "./DashboardV2.css";
+import { useState } from "react";
+import toast from "react-hot-toast";
 import axios from "axios";
-import { getNotes, createNote } from "../services/noteService";
+import {
+  getNotes,
+  createNote,
+  updateNote,
+  deleteNote,
+} from "../services/noteService";
 import ConceptMap from "../components/ConceptMap";
 import KnowledgeGraph from "../components/KnowledgeGraph";
+import logo from "../assets/logo.png";
 import {
-  FaBrain,
+  
   FaStickyNote,
 } from "react-icons/fa";
 import { FaSignOutAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
 
 function Dashboard() {
   const [notes, setNotes] = useState([]);
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -30,8 +40,22 @@ function Dashboard() {
   const [activeTab, setActiveTab] =
   useState("summary");
 
+
+  const [loading, setLoading] =
+  useState(false);
   const [selectedNote, setSelectedNote] =
   useState(null);
+
+  const [isEditing, setIsEditing] =
+  useState(false);
+
+const [editTitle, setEditTitle] =
+  useState("");
+
+const dropdownRef = useRef(null);
+
+const [editContent, setEditContent] =
+  useState("");
 
   useEffect(() => {
     fetchNotes();
@@ -49,6 +73,37 @@ function Dashboard() {
     }
   };
 
+  const [showMenu, setShowMenu] = useState(false);
+  useEffect(() => {
+
+  const handleClickOutside = (event) => {
+
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(
+        event.target
+      )
+    ) {
+      setShowMenu(false);
+    }
+  };
+
+  document.addEventListener(
+    "mousedown",
+    handleClickOutside
+  );
+
+  return () => {
+
+    document.removeEventListener(
+      "mousedown",
+      handleClickOutside
+    );
+
+  };
+
+}, []);
+
   const handleCreateNote = async (e) => {
     e.preventDefault();
 
@@ -57,6 +112,10 @@ function Dashboard() {
         title,
         content,
       });
+
+      toast.success(
+  "Note created successfully"
+);
 
       setTitle("");
       setContent("");
@@ -68,74 +127,134 @@ function Dashboard() {
   };
 
   const handleSummary = async (noteContent) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/ai/summary",
-        {
-          content: noteContent,
-        },
-      );
+  try {
 
-      setSummary(response.data.summary);
-    } catch (error) {
-      console.log(error.response?.data || error.message);
-    }
-  };
+    setLoading(true);
+
+    const response = await axios.post(
+      "http://localhost:5000/api/ai/summary",
+      {
+        content: noteContent,
+      },
+    );
+
+    setSummary(response.data.summary);
+
+  } catch (error) {
+    console.log(
+      error.response?.data ||
+      error.message
+    );
+
+  } finally {
+
+    setLoading(false);
+
+  }
+};
+
+const handleLogout = () => {
+  localStorage.removeItem("token");
+  navigate("/login");
+};
 
   const handleFlashcards = async (noteContent) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/ai/flashcards",
-        {
-          content: noteContent,
-        },
-      );
+  try {
 
-      setFlashcards(response.data.flashcards);
-    } catch (error) {
-      console.log(error.response?.data || error.message);
-    }
-  };
+    setLoading(true);
 
-  const handleDictionary = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/ai/dictionary",
-        {
-          term,
-        },
-      );
+    const response = await axios.post(
+      "http://localhost:5000/api/ai/flashcards",
+      {
+        content: noteContent,
+      },
+    );
 
-      setDictionaryResult(response.data.explanation);
-    } catch (error) {
-      console.log(error.response?.data || error.message);
-    }
-  };
+    setFlashcards(
+      response.data.flashcards
+    );
 
-  const handleConceptMap = async (noteContent) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/ai/concepts",
-        {
-          content: noteContent,
-        },
-      );
+  } catch (error) {
+    console.log(
+      error.response?.data ||
+      error.message
+    );
 
-      const cleaned = response.data.concepts
+  } finally {
+
+    setLoading(false);
+
+  }
+};
+
+const handleDictionary = async () => {
+  try {
+
+    setLoading(true);
+
+    const response = await axios.post(
+      "http://localhost:5000/api/ai/dictionary",
+      {
+        term,
+      },
+    );
+
+    setDictionaryResult(
+      response.data.explanation
+    );
+
+  } catch (error) {
+    console.log(
+      error.response?.data ||
+      error.message
+    );
+
+  } finally {
+
+    setLoading(false);
+
+  }
+};
+
+const handleConceptMap = async (noteContent) => {
+  try {
+
+    setLoading(true);
+
+    const response = await axios.post(
+      "http://localhost:5000/api/ai/concepts",
+      {
+        content: noteContent,
+      }
+    );
+
+    const cleaned =
+      response.data.concepts
         .replace(/```json/g, "")
         .replace(/```/g, "")
         .trim();
 
-      const parsed = JSON.parse(cleaned);
+    const parsed =
+      JSON.parse(cleaned);
 
-      setConcepts(parsed.concepts);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    setConcepts(
+      parsed.concepts
+    );
 
+  } catch (error) {
+
+    console.log(error);
+
+  } finally {
+
+    setLoading(false);
+
+  }
+};
+  
   const handleKnowledgeGraph = async (noteContent) => {
     try {
+         setLoading(true);
       const response = await axios.post(
         "http://localhost:5000/api/ai/knowledge-graph",
         {
@@ -160,6 +279,66 @@ function Dashboard() {
     } catch (error) {
       console.log(error);
     }
+     finally {
+
+    setLoading(false);
+     }
+
+  };
+
+  const handleDeleteNote = async () => {
+  if (!selectedNote) return;
+
+  const confirmDelete =
+    window.confirm(
+      "Delete this note?"
+    );
+
+  if (!confirmDelete) return;
+
+  try {
+    await deleteNote(
+      selectedNote._id
+    );
+
+    toast.success(
+  "Note deleted successfully"
+);
+    setSelectedNote(null);
+
+    fetchNotes();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const handleUpdateNote =
+  async () => {
+    try {
+      await updateNote(
+        selectedNote._id,
+        {
+          title: editTitle,
+          content: editContent,
+        }
+      );
+
+      toast.success(
+  "Note updated successfully"
+);
+
+      setIsEditing(false);
+
+      fetchNotes();
+
+      setSelectedNote({
+        ...selectedNote,
+        title: editTitle,
+        content: editContent,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const filteredNotes = notes.filter(
@@ -171,23 +350,16 @@ function Dashboard() {
   return (
   <div className="dashboard">
     <div className="sidebar">
-      <div className="logo">
-  <FaBrain /> NeuroNotes
+     <div className="logo">
+  <img
+    src={logo}
+    alt="NeuroNotes"
+    className="logo-img"
+  />
+
+  <span>NeuroNotes</span>
 </div>
 
-<button
-  style={{
-    width: "100%",
-    marginTop: "15px",
-    background: "#ef4444",
-  }}
-  onClick={() => {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
-  }}
->
-  Logout
-</button>
 
       <input
         className="search-box"
@@ -199,9 +371,14 @@ function Dashboard() {
         }
       />
 
-      <h3 style={{ marginTop: "20px" }}>
-        Notes
-      </h3>
+      <h3
+  style={{
+    marginTop: "20px",
+    marginBottom: "15px"
+  }}
+>
+  Recent Notes
+</h3>
 
       {filteredNotes.map((note) => (
   <div
@@ -221,35 +398,103 @@ function Dashboard() {
       setDictionaryResult("");
     }}
   >
-    <FaStickyNote /> {note.title}
+    <>
+  <FaStickyNote
+    style={{ marginRight: "10px" }}
+  />
+  {note.title}
+</>
   </div>
 ))}
     </div>
 
-    <div className="main">
+   <div className="main">
 
-  <div className="topbar">
-
+  <div className="dashboard-header">
     <div>
-      <h1>AI Learning Workspace</h1>
+      <h1>Dashboard</h1>
+
       <p className="subtitle">
-        Learn smarter with AI-powered notes
+        Manage your notes and AI workspace
       </p>
     </div>
-
-    <button
-  className="logout-btn"
-  onClick={() => {
-    localStorage.removeItem("token");
-    window.location.href = "/";
+<div
+  style={{
+    display: "flex",
+    gap: "10px",
+    alignItems: "center",
   }}
 >
-  <FaSignOutAlt />
-  {" "}
-  Logout
-</button>
+  <div
+  className="profile-section"
+  ref={dropdownRef}
+>
+
+  <div
+    className="user-avatar"
+    onClick={() =>
+      setShowMenu(!showMenu)
+    }
+  >
+    K
   </div>
 
+  {showMenu && (
+
+    <div className="profile-dropdown">
+
+      <div className="profile-name">
+        Kajal
+      </div>
+
+      <button
+        className="dropdown-logout"
+        onClick={handleLogout}
+      >
+        Logout
+      </button>
+
+    </div>
+
+  )}
+
+</div>
+</div>
+
+      
+    
+  </div>
+
+
+   <div className="welcome-card-v2">
+  <h2>
+  Welcome back 👋
+</h2>
+
+  <p>
+    Turn notes into summaries, flashcards,
+    concept maps and knowledge graphs with
+    AI-powered learning tools.
+  </p>
+</div>
+  <div className="stats-grid">
+
+  <div className="mini-stat stat-purple">
+    <h3>Total Notes</h3>
+    <span>{notes.length}</span>
+  </div>
+
+  <div className="mini-stat stat-cyan">
+    <h3>Concept Maps</h3>
+    <span>{concepts.length}</span>
+  </div>
+
+ <div className="mini-stat stat-pink">
+  <h3>Knowledge Graphs</h3>
+  <span>{graphData ? 1 : 0}</span>
+</div>
+</div>
+      
       <div className="section">
         <h2>Create Note</h2>
 
@@ -272,88 +517,132 @@ function Dashboard() {
             }
           />
 
-          <button type="submit">
-            Create Note
-          </button>
+          {selectedNote ? (
+  <button
+    type="button"
+    onClick={handleUpdateNote}
+  >
+    Update Note
+  </button>
+) : (
+  <button type="submit">
+    Create Note
+  </button>
+)}
         </form>
       </div>
-       {!selectedNote && (
-  <div className="section">
-    <h2>Select a Note</h2>
+       
+    {selectedNote && (
+  <>
+    <div className="section">
 
-    <p>
-      Choose a note from the sidebar to
-      generate summaries, flashcards,
-      concept maps, and knowledge graphs.
-    </p>
-  </div>
-)}
-      {selectedNote && (
-        <>
-          <div className="section">
-            <h2>
-              {selectedNote.title}
-            </h2>
+      <div className="note-header">
 
-            <p>
-              {selectedNote.content}
-            </p>
+        <h2>{selectedNote.title}</h2>
 
-            <div className="ai-buttons">
-              <button
-                onClick={() => {
-                  handleSummary(
-                    selectedNote.content
-                  );
-                  setActiveTab(
-                    "summary"
-                  );
-                }}
-              >
-                Generate Summary
-              </button>
+        <div className="note-actions">
 
-              <button
-                onClick={() => {
-                  handleFlashcards(
-                    selectedNote.content
-                  );
-                  setActiveTab(
-                    "flashcards"
-                  );
-                }}
-              >
-                Generate Flashcards
-              </button>
+          <button
+            className="edit-btn"
+            onClick={() => {
+              setIsEditing(true);
+              setEditTitle(selectedNote.title);
+              setEditContent(selectedNote.content);
+            }}
+          >
+            ✏️ Edit
+          </button>
 
-              <button
-                onClick={() => {
-                  handleConceptMap(
-                    selectedNote.content
-                  );
-                  setActiveTab(
-                    "concept"
-                  );
-                }}
-              >
-                Generate Concept Map
-              </button>
+          <button
+            className="delete-btn"
+            onClick={handleDeleteNote}
+          >
+            🗑 Delete
+          </button>
 
-              <button
-                onClick={() => {
-                  handleKnowledgeGraph(
-                    selectedNote.content
-                  );
-                  setActiveTab(
-                    "graph"
-                  );
-                }}
-              >
-                Generate Knowledge Graph
-              </button>
-            </div>
+        </div>
 
-            <div className="dictionary-box">
+      </div>
+
+      {isEditing ? (
+
+        <div>
+
+          <input
+            value={editTitle}
+            onChange={(e) =>
+              setEditTitle(e.target.value)
+            }
+          />
+
+          <textarea
+            rows="10"
+            value={editContent}
+            onChange={(e) =>
+              setEditContent(e.target.value)
+            }
+          />
+
+          <button
+            onClick={handleUpdateNote}
+            style={{ marginTop: "15px" }}
+          >
+            Save Changes
+          </button>
+
+        </div>
+
+      ) : (
+
+        <p>{selectedNote.content}</p>
+
+      )}
+      <div className="ai-buttons">
+
+  <button
+    className="ai-summary"
+    onClick={() => {
+      handleSummary(selectedNote.content);
+      setActiveTab("summary");
+    }}
+  >
+    🧠 Summary
+  </button>
+
+  <button
+    className="ai-flash"
+    onClick={() => {
+      handleFlashcards(selectedNote.content);
+      setActiveTab("flashcards");
+    }}
+  >
+    📚 Flashcards
+  </button>
+
+  <button
+    className="ai-concept"
+    onClick={() => {
+      handleConceptMap(selectedNote.content);
+      setActiveTab("concept");
+    }}
+  >
+    🕸 Concept Map
+  </button>
+
+  <button
+    className="ai-graph"
+    onClick={() => {
+      handleKnowledgeGraph(selectedNote.content);
+      setActiveTab("graph");
+    }}
+  >
+    🔗 Graph
+  </button>
+
+</div>
+
+<div className="dictionary-box">
+
   <input
     type="text"
     placeholder="Enter a term..."
@@ -363,17 +652,20 @@ function Dashboard() {
     }
   />
 
-  <button
-    onClick={() => {
-      handleDictionary();
-      setActiveTab("dictionary");
-    }}
-  >
-    Explain
-  </button>
+ <button
+  className="explain-btn"
+  onClick={() => {
+    handleDictionary();
+    setActiveTab("dictionary");
+  }}
+>
+   Explain
+</button>
+
 </div>
 
-            <div className="tabs">
+<div className="tabs">
+
   <button
     className={
       activeTab === "summary"
@@ -438,10 +730,18 @@ function Dashboard() {
   >
     Dictionary
   </button>
+
 </div>
-          </div>
+
+      
 
           <div className="section">
+
+  {loading && (
+    <div className="loading-box">
+      Generating AI Response...
+    </div>
+  )}
             {activeTab ===
               "summary" &&
               summary && (
@@ -514,8 +814,11 @@ function Dashboard() {
                 </>
               )}
           </div>
-        </>
-      )}
+
+</div>
+
+</>
+)}
     </div>
   </div>
 );

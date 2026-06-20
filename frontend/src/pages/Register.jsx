@@ -67,13 +67,17 @@ function Register() {
         }}
       >
         <h1
-          style={{
-            textAlign: "center",
-            marginBottom: "20px",
-          }}
-        >
-          Create Account
-        </h1>
+  style={{
+    textAlign: "center",
+    marginBottom: "24px",
+    fontSize: "2.5rem",
+    lineHeight: "1.2",
+    fontWeight: "700",
+    fontFamily: '"Space Grotesk", sans-serif',
+  }}
+>
+  Create Account
+</h1>
 
         <form
           onSubmit={handleSubmit}

@@ -10,9 +10,14 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+import { Toaster } from "react-hot-toast";
+
 function App() {
   return (
     <BrowserRouter>
+
+      <Toaster position="top-right" />
+
       <Routes>
 
         <Route
@@ -40,6 +45,7 @@ function App() {
         />
 
       </Routes>
+
     </BrowserRouter>
   );
 }

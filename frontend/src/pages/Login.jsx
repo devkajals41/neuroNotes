@@ -3,10 +3,11 @@ import {
   useNavigate,
   Link,
 } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 import { loginUser } from "../services/authService";
 import "./Auth.css";
-import { FaBrain } from "react-icons/fa";
+
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -43,9 +44,21 @@ function Login() {
   <div className="auth-container">
     <div className="auth-card">
 
-      <h1 className="auth-title">
-        <FaBrain /> NeuroNotes
-      </h1>
+      <div className="auth-header">
+  <img
+    src={logo}
+    alt="NeuroNotes"
+    className="auth-logo"
+  />
+
+  <h1 className="auth-title">
+    NeuroNotes
+  </h1>
+
+  <p className="auth-subtitle">
+    Learn Smarter With AI
+  </p>
+</div>
 
       <form onSubmit={handleSubmit}>
         <input
