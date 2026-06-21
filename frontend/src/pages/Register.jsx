@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../services/authService";
+import authBg from "../assets/auth.jpg";
+import "./Auth.css";
 
 function Register() {
   const [name, setName] = useState("");
@@ -46,26 +48,16 @@ function Register() {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent:
-          "center",
-        alignItems: "center",
-        background: "#f4f7fc",
-      }}
-    >
-      <div
-        style={{
-          width: "400px",
-          background: "white",
-          padding: "30px",
-          borderRadius: "20px",
-          boxShadow:
-            "0 10px 30px rgba(0,0,0,0.1)",
-        }}
-      >
+
+    
+
+   <div
+  className="auth-container"
+  style={{
+    backgroundImage: `url(${authBg})`,
+  }}
+>
+    <div className="auth-card">
         <h1
   style={{
     textAlign: "center",

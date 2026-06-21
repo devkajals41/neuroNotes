@@ -9,11 +9,31 @@ export const generateSummary = async (noteContent) => {
   const model = genAI.getGenerativeModel({
     model: "gemini-2.5-flash-lite",
   });
-  const prompt = `
-  Summarize the following note in 3-5 concise sentences:
 
-  ${noteContent}
-  `;
+  const prompt = `
+Summarize this note for quick revision.
+
+Rules:
+
+- Return exactly 5 important points.
+- Each point must start with •
+- Put EVERY point on a NEW LINE.
+- Do NOT put multiple points on the same line.
+- Do NOT write paragraphs.
+- Do NOT write headings.
+- Keep each point short.
+
+Example:
+
+• Point one
+
+• Point two
+
+• Point three
+
+Note:
+${noteContent}
+`;
 
   const result = await model.generateContent(prompt);
 
@@ -48,14 +68,27 @@ export const explainTerm = async (term) => {
   });
 
   const prompt = `
-Explain this term in a student-friendly way.
+Give a dictionary entry.
 
-Term: ${term}
+Format exactly:
 
-Return:
-Definition:
-Example:
-Related Concepts:
+Word: Inheritance
+
+Meaning:
+Receiving traits or property from a predecessor.
+
+Explanation:
+It refers to the process of passing down characteristics, genes, or assets from one generation to the next.
+
+Rules:
+- Meaning = one short line.
+- Explanation = one sentence.
+- No markdown.
+- No JSON.
+- No bullet points.
+
+Term:
+${term}
 `;
 
   const result = await model.generateContent(prompt);

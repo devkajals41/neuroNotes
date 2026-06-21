@@ -1,10 +1,8 @@
 import Note from "../models/Note.js";
 
-
 // Create Note
 export const createNote = async (req, res) => {
   try {
-
     const { title, content } = req.body;
 
     if (!title || !content) {
@@ -25,22 +23,17 @@ export const createNote = async (req, res) => {
       message: "Note created successfully",
       note,
     });
-
   } catch (error) {
-
     res.status(500).json({
       success: false,
       message: error.message,
     });
-
   }
 };
-
 
 // Get Logged-in User's Notes
 export const getNotes = async (req, res) => {
   try {
-
     const notes = await Note.find({
       user: req.user._id,
     });
@@ -50,22 +43,17 @@ export const getNotes = async (req, res) => {
       count: notes.length,
       notes,
     });
-
   } catch (error) {
-
     res.status(500).json({
       success: false,
       message: error.message,
     });
-
   }
 };
-
 
 // Update Note
 export const updateNote = async (req, res) => {
   try {
-
     const { title, content } = req.body;
 
     const note = await Note.findById(req.params.id);
@@ -95,22 +83,17 @@ export const updateNote = async (req, res) => {
       message: "Note updated successfully",
       note: updatedNote,
     });
-
   } catch (error) {
-
     res.status(500).json({
       success: false,
       message: error.message,
     });
-
   }
 };
-
 
 // Delete Note
 export const deleteNote = async (req, res) => {
   try {
-
     const note = await Note.findById(req.params.id);
 
     if (!note) {
@@ -134,13 +117,10 @@ export const deleteNote = async (req, res) => {
       success: true,
       message: "Note deleted successfully",
     });
-
   } catch (error) {
-
     res.status(500).json({
       success: false,
       message: error.message,
     });
-
   }
 };

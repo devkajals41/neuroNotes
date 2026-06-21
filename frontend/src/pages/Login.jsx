@@ -7,6 +7,7 @@ import logo from "../assets/logo.png";
 
 import { loginUser } from "../services/authService";
 import "./Auth.css";
+import authBg from "../assets/auth.jpg";
 
 
 function Login() {
@@ -27,9 +28,18 @@ function Login() {
       console.log("Login Success:", data);
 
       // Save JWT token in browser
-      localStorage.setItem("token", data.token);
+  
 
-      
+
+      localStorage.setItem(
+  "token",
+  data.token
+);
+
+localStorage.setItem(
+  "userName",
+  data.name
+);
 
       // Go to Dashboard
       navigate("/dashboard");
@@ -41,15 +51,16 @@ function Login() {
   };
 
   return (
-  <div className="auth-container">
+  <div
+  className="auth-container"
+  style={{
+    backgroundImage: `url(${authBg})`,
+  }}
+>
     <div className="auth-card">
 
       <div className="auth-header">
-  <img
-    src={logo}
-    alt="NeuroNotes"
-    className="auth-logo"
-  />
+  
 
   <h1 className="auth-title">
     NeuroNotes

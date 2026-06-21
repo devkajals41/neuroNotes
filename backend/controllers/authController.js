@@ -2,13 +2,11 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import generateToken from "../utils/generateToken.js";
 
-
 // ===============================
 // Register User
 // ===============================
 export const registerUser = async (req, res) => {
   try {
-
     const { name, email, password } = req.body;
 
     // Check required fields
@@ -48,24 +46,19 @@ export const registerUser = async (req, res) => {
         email: user.email,
       },
     });
-
   } catch (error) {
-
     res.status(500).json({
       success: false,
       message: error.message,
     });
-
   }
 };
-
 
 // ===============================
 // Login User
 // ===============================
 export const loginUser = async (req, res) => {
   try {
-
     const { email, password } = req.body;
 
     // Check required fields
@@ -87,10 +80,7 @@ export const loginUser = async (req, res) => {
     }
 
     // Compare password
-    const isMatch = await bcrypt.compare(
-      password,
-      user.password
-    );
+    const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       return res.status(401).json({
@@ -106,19 +96,13 @@ export const loginUser = async (req, res) => {
       success: true,
       message: "Login successful",
       token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-      },
+      email: user.email,
+      name: user.name,
     });
-
   } catch (error) {
-
     res.status(500).json({
       success: false,
       message: error.message,
     });
-
   }
 };

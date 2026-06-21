@@ -1,6 +1,7 @@
 import "./DashboardV2.css";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import ReactMarkdown from "react-markdown";
 import axios from "axios";
 import {
   getNotes,
@@ -8,17 +9,23 @@ import {
   updateNote,
   deleteNote,
 } from "../services/noteService";
+import studyIllustration from "../assets/illustrations/illus2-removebg-preview.png";
 import ConceptMap from "../components/ConceptMap";
 import KnowledgeGraph from "../components/KnowledgeGraph";
+import secondIllustration from "../assets/illustrations/second.png";
 import logo from "../assets/logo.png";
 import {
-  
   FaStickyNote,
+  FaBrain,
+  FaBookOpen,
+  FaProjectDiagram,
+
+  FaNetworkWired,
 } from "react-icons/fa";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
-
+import { FaEdit } from "react-icons/fa";
 function Dashboard() {
   const [notes, setNotes] = useState([]);
   const navigate = useNavigate();
@@ -54,8 +61,19 @@ const [editTitle, setEditTitle] =
 
 const dropdownRef = useRef(null);
 
+const [flashcardList, setFlashcardList] =
+  useState([]);
+
+const [currentCard, setCurrentCard] =
+  useState(0);
+
+const [showAnswer, setShowAnswer] =
+  useState(false);
+
 const [editContent, setEditContent] =
   useState("");
+
+
 
   useEffect(() => {
     fetchNotes();
@@ -173,6 +191,50 @@ const handleLogout = () => {
     setFlashcards(
       response.data.flashcards
     );
+
+    const raw =
+  response.data.flashcards;
+
+const cards =
+  raw
+    .split("\n\n")
+    .filter(
+      (item) =>
+        item.includes("Q:")
+    )
+    .map((item) => {
+
+      const lines =
+        item.split("\n");
+
+      return {
+        question:
+          lines[0]
+            .replace(
+              "Q:",
+              ""
+            )
+            .trim(),
+
+        answer:
+          lines[1]
+            .replace(
+              "A:",
+              ""
+            )
+            .trim(),
+      };
+    });
+
+setFlashcardList(cards);
+
+setCurrentCard(0);
+
+setShowAnswer(false);
+
+    console.log(
+  response.data.flashcards
+);
 
   } catch (error) {
     console.log(
@@ -398,12 +460,25 @@ const handleUpdateNote =
       setDictionaryResult("");
     }}
   >
-    <>
-  <FaStickyNote
-    style={{ marginRight: "10px" }}
-  />
-  {note.title}
-</>
+    <div className="note-card-content">
+
+  <div className="note-icon">
+    <FaStickyNote />
+  </div>
+
+  <div className="note-info">
+
+    <h4>
+      {note.title}
+    </h4>
+
+  <span>
+  Updated recently
+</span>
+
+  </div>
+
+</div>
   </div>
 ))}
     </div>
@@ -412,11 +487,7 @@ const handleUpdateNote =
 
   <div className="dashboard-header">
     <div>
-      <h1>Dashboard</h1>
-
-      <p className="subtitle">
-        Manage your notes and AI workspace
-      </p>
+     
     </div>
 <div
   style={{
@@ -431,20 +502,26 @@ const handleUpdateNote =
 >
 
   <div
-    className="user-avatar"
-    onClick={() =>
-      setShowMenu(!showMenu)
-    }
-  >
-    K
-  </div>
+  className="user-avatar"
+  onClick={() =>
+    setShowMenu(!showMenu)
+  }
+>
+  {
+    localStorage
+      .getItem("userName")
+      ?.charAt(0)
+      ?.toUpperCase()
+      || "U"
+  }
+</div>
 
   {showMenu && (
 
     <div className="profile-dropdown">
 
       <div className="profile-name">
-        Kajal
+       {localStorage.getItem("userName")}
       </div>
 
       <button
@@ -464,33 +541,50 @@ const handleUpdateNote =
       
     
   </div>
-
-
-   <div className="welcome-card-v2">
-  <h2>
-  Welcome back 👋
-</h2>
-
-  <p>
-    Turn notes into summaries, flashcards,
-    concept maps and knowledge graphs with
-    AI-powered learning tools.
-  </p>
+<div className="hero-illustration-container">
+  <img
+    src={studyIllustration}
+    alt="Study Illustration"
+    className="hero-illustration"
+  />
 </div>
+
+
+
+ <div className="welcome-banner">
+
+  <div className="welcome-card-v2">
+    <h2>Welcome!</h2>
+
+    <p>
+      Turn notes into summaries,
+      flashcards, concept maps and
+      knowledge graphs.
+    </p>
+  </div>
+
+  <img
+    src={secondIllustration}
+    alt="Welcome"
+    className="welcome-banner-image"
+  />
+
+</div>
+
   <div className="stats-grid">
 
-  <div className="mini-stat stat-purple">
+  <div className="mini-stat stat-total">
     <h3>Total Notes</h3>
     <span>{notes.length}</span>
   </div>
 
-  <div className="mini-stat stat-cyan">
+  <div className="mini-stat stat-concept">
     <h3>Concept Maps</h3>
     <span>{concepts.length}</span>
   </div>
 
- <div className="mini-stat stat-pink">
-  <h3>Knowledge Graphs</h3>
+ <div className="mini-stat stat-graph">
+  <h3>Graphs</h3>
   <span>{graphData ? 1 : 0}</span>
 </div>
 </div>
@@ -543,14 +637,15 @@ const handleUpdateNote =
         <div className="note-actions">
 
           <button
-            className="edit-btn"
+             className="glass-btn edit-btn"
             onClick={() => {
               setIsEditing(true);
               setEditTitle(selectedNote.title);
               setEditContent(selectedNote.content);
             }}
           >
-            ✏️ Edit
+             <FaEdit />
+  Edit
           </button>
 
           <button
@@ -600,43 +695,44 @@ const handleUpdateNote =
       <div className="ai-buttons">
 
   <button
-    className="ai-summary"
+    className="glass-btn summary-btn"
     onClick={() => {
       handleSummary(selectedNote.content);
       setActiveTab("summary");
     }}
   >
-    🧠 Summary
+     <FaBrain />
+  Summary
   </button>
 
   <button
-    className="ai-flash"
+    className="glass-btn flash-btn"
     onClick={() => {
       handleFlashcards(selectedNote.content);
       setActiveTab("flashcards");
     }}
   >
-    📚 Flashcards
+    <FaBookOpen /> Flashcards
   </button>
 
   <button
-    className="ai-concept"
+    className="glass-btn concept-btn"
     onClick={() => {
       handleConceptMap(selectedNote.content);
       setActiveTab("concept");
     }}
   >
-    🕸 Concept Map
+    <FaProjectDiagram /> Concept Map
   </button>
 
   <button
-    className="ai-graph"
+   className="glass-btn graph-btn"
     onClick={() => {
       handleKnowledgeGraph(selectedNote.content);
       setActiveTab("graph");
     }}
   >
-    🔗 Graph
+    <FaNetworkWired /> Graph
   </button>
 
 </div>
@@ -749,7 +845,12 @@ const handleUpdateNote =
                   <h2>
                     AI Summary
                   </h2>
-                  <p>{summary}</p>
+                  <div className="summary-card">
+ 
+ <div className="summary-content">
+  {summary}
+</div>
+</div>
                 </>
               )}
 
@@ -760,9 +861,129 @@ const handleUpdateNote =
                   <h2>
                     Flashcards
                   </h2>
-                  <pre>
-                    {flashcards}
-                  </pre>
+                  {flashcardList.length > 0 && (
+
+  <div className="flashcard-wrapper">
+
+    <div
+      className="flashcard"
+      onClick={() =>
+        setShowAnswer(
+          !showAnswer
+        )
+      }
+    >
+      <div className="flashcard-badge">
+  Flashcard {currentCard + 1} / {flashcardList.length}
+</div>
+
+     <div
+  className={`flashcard-inner ${
+    showAnswer
+      ? "flipped"
+      : ""
+  }`}
+>
+
+  <div className="flashcard-front">
+
+    <h3 className="flashcard-title">
+      Question
+    </h3>
+
+    <p>
+      {
+        flashcardList[
+          currentCard
+        ]?.question
+      }
+    </p>
+
+    <span>
+      Click to reveal answer
+    </span>
+
+  </div>
+
+  <div className="flashcard-back">
+
+    <h3 className="flashcard-title">
+      Answer
+    </h3>
+
+    <p>
+      {
+        flashcardList[
+          currentCard
+        ]?.answer
+      }
+    </p>
+
+  </div>
+
+</div>
+
+    </div>
+
+    <div className="flashcard-nav">
+
+      <button
+        onClick={() => {
+
+          if (
+            currentCard > 0
+          ) {
+
+            setCurrentCard(
+              currentCard - 1
+            );
+
+            setShowAnswer(
+              false
+            );
+          }
+
+        }}
+      >
+        ← Previous
+      </button>
+
+      <span>
+        {currentCard + 1}
+        {" / "}
+        {
+          flashcardList.length
+        }
+      </span>
+
+      <button
+        onClick={() => {
+
+          if (
+            currentCard <
+            flashcardList.length -
+              1
+          ) {
+
+            setCurrentCard(
+              currentCard + 1
+            );
+
+            setShowAnswer(
+              false
+            );
+          }
+
+        }}
+      >
+        Next →
+      </button>
+
+    </div>
+
+  </div>
+
+)}
                 </>
               )}
 
@@ -774,45 +995,99 @@ const handleUpdateNote =
         Dictionary
       </h2>
 
-      <pre>
-        {dictionaryResult}
-      </pre>
+      <div className="dictionary-card">
+  <h3 className="ai-heading">
+  <FaBookOpen />
+  Explanation
+</h3>
+ <div className="dictionary-content">
+
+  {dictionaryResult
+    ?.split("\n")
+    .map((line, index) => {
+
+      if (line.startsWith("Word:")) {
+        return (
+          <h3
+            key={index}
+            className="dict-word"
+          >
+            {line.replace(
+              "Word:",
+              ""
+            )}
+          </h3>
+        );
+      }
+
+      if (
+        line.startsWith("Meaning:")
+      ) {
+        return (
+          <p
+            key={index}
+            className="dict-heading"
+          >
+            Meaning:
+          </p>
+        );
+      }
+
+      if (
+        line.startsWith(
+          "Explanation:"
+        )
+      ) {
+        return (
+          <p
+            key={index}
+            className="dict-heading"
+          >
+            Explanation:
+          </p>
+        );
+      }
+
+      return (
+        <p
+          key={index}
+          className="dict-text"
+        >
+          {line}
+        </p>
+      );
+    })}
+</div>
+</div>
     </>
 )}
 
 
-            {activeTab ===
-              "concept" &&
-              concepts.length >
-                0 && (
-                <>
-                  <h2>
-                    Concept Map
-                  </h2>
+ {activeTab === "concept" && (
+  <div className="concept-card">
 
-                  <ConceptMap
-                    concepts={
-                      concepts
-                    }
-                  />
-                </>
-              )}
+    <h3 className="ai-heading">
+      <FaProjectDiagram />
+      Concept Map
+    </h3>
 
-            {activeTab ===
-              "graph" &&
-              graphData && (
-                <>
-                  <h2>
-                    Knowledge Graph
-                  </h2>
+    <ConceptMap concepts={concepts} />
 
-                  <KnowledgeGraph
-                    graphData={
-                      graphData
-                    }
-                  />
-                </>
-              )}
+  </div>
+)}
+
+{activeTab === "graph" && (
+  <div className="graph-card">
+
+    <h3 className="ai-heading">
+      <FaNetworkWired />
+      Knowledge Graph
+    </h3>
+
+    <KnowledgeGraph graphData={graphData} />
+
+  </div>
+)}
           </div>
 
 </div>
