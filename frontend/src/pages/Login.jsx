@@ -8,11 +8,16 @@ import logo from "../assets/logo.png";
 import { loginUser } from "../services/authService";
 import "./Auth.css";
 import authBg from "../assets/auth.jpg";
-
+import {
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] =
+  useState(false);
 
   const navigate = useNavigate();
 
@@ -81,16 +86,39 @@ localStorage.setItem(
             setEmail(e.target.value)
           }
         />
+<div className="password-wrapper">
 
-        <input
-          className="auth-input"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
-        />
+  <input
+    className="auth-input"
+    type={
+      showPassword
+        ? "text"
+        : "password"
+    }
+    placeholder="Password"
+    value={password}
+    onChange={(e) =>
+      setPassword(e.target.value)
+    }
+  />
+
+  <button
+    type="button"
+    className="password-toggle"
+    onClick={() =>
+      setShowPassword(
+        !showPassword
+      )
+    }
+  >
+    {
+      showPassword
+        ? <FaEyeSlash />
+        : <FaEye />
+    }
+  </button>
+
+</div>
 
         <button
           className="auth-button"

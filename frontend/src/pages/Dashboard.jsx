@@ -409,6 +409,42 @@ const handleUpdateNote =
       note.content.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
+  const getTimeAgo = (date) => {
+
+  const seconds =
+    Math.floor(
+      (new Date() - new Date(date))
+      / 1000
+    );
+
+  const minutes =
+    Math.floor(seconds / 60);
+
+  const hours =
+    Math.floor(minutes / 60);
+
+  const days =
+    Math.floor(hours / 24);
+
+  if (minutes < 1)
+    return "Just now";
+
+  if (minutes < 60)
+    return `${minutes} min ago`;
+
+  if (hours < 24)
+    return `${hours} hr ago`;
+
+  if (days === 1)
+    return "Yesterday";
+
+  if (days < 7)
+    return `${days} days ago`;
+
+  return new Date(date)
+    .toLocaleDateString();
+};
+
   return (
   <div className="dashboard">
     <div className="sidebar">
@@ -472,8 +508,8 @@ const handleUpdateNote =
       {note.title}
     </h4>
 
-  <span>
-  Updated recently
+ <span>
+  {getTimeAgo(note.updatedAt)}
 </span>
 
   </div>

@@ -3,12 +3,19 @@ import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../services/authService";
 import authBg from "../assets/auth.jpg";
 import "./Auth.css";
+import {
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
 
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] =
     useState("");
+
+    const [showPassword, setShowPassword] =
+  useState(false);
 
   const navigate = useNavigate();
 
@@ -96,17 +103,39 @@ function Register() {
             }
           />
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) =>
-              setPassword(
-                e.target.value
-              )
-            }
-          />
+         <div className="password-wrapper">
 
+  <input
+    className="auth-input"
+    type={
+      showPassword
+        ? "text"
+        : "password"
+    }
+    placeholder="Password"
+    value={password}
+    onChange={(e) =>
+      setPassword(e.target.value)
+    }
+  />
+
+  <button
+    type="button"
+    className="password-toggle"
+    onClick={() =>
+      setShowPassword(
+        !showPassword
+      )
+    }
+  >
+    {
+      showPassword
+        ? <FaEyeSlash />
+        : <FaEye />
+    }
+  </button>
+
+</div>
           <button
             type="submit"
             style={{

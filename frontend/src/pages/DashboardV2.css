@@ -1764,3 +1764,100 @@ background: linear-gradient(
   opacity: 0.75;
 
 }
+
+.password-wrapper{
+  position:relative;
+}
+
+.password-toggle{
+
+  position:absolute;
+
+  right:15px;
+
+  top:50%;
+
+  transform:translateY(-50%);
+
+  background:none;
+
+  border:none;
+
+  color:#0D1E4C;
+
+  cursor:pointer;
+
+  z-index:10;
+}
+.password-toggle:focus,
+.password-toggle:active{
+
+  transform:translateY(-50%);
+
+  box-shadow:none;
+}
+.password-toggle svg{
+
+  font-size:18px;
+
+  width:18px;
+
+  height:18px;
+}
+
+.password-toggle:hover{
+
+  background:none;
+
+  color:#0D1E4C;
+
+  transform:translateY(-50%);
+
+  box-shadow:none;
+}
+
+@media (max-width: 768px){
+
+  .hero-illustration{
+
+    width:70px !important;
+
+    height:auto;
+
+    top:20px;
+
+    left:20px;
+  }
+
+}
+
+@media (max-width:768px){
+
+  .welcome-banner-image{
+
+    width:90px !important;
+
+    right:10px;
+
+    bottom:0;
+  }
+
+}
+
+@media (max-width:768px){
+
+  .user-avatar{
+
+    width:50px;
+
+    height:50px;
+
+    font-size:1.5rem;
+
+    top:10px;
+
+    right:10px;
+  }
+
+}
+
