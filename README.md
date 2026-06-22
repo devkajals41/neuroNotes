@@ -174,7 +174,7 @@ Provides instant explanations for technical terms.
 
 ### Concept Map
 
-![Concept Map](./screenshots/concept map.png)
+![Concept Map](./screenshots/concept-map.png)
 
 ### Knowledge Graph
 
