@@ -160,8 +160,8 @@ Provides instant explanations for technical terms.
 
 ### Dashboard
 
-![Dashboard](./screenshots/dashboard.png)
 ![Dashboard](./screenshots/dashboard2.png)
+![Dashboard](./screenshots/dashboard.png)
 ![Dashboard](./screenshots/dashboard3.png)
 
 ### AI Summary
