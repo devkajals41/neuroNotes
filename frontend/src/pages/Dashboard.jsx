@@ -144,6 +144,13 @@ const [editContent, setEditContent] =
     }
   };
 
+
+// "http://localhost:5000/api/ai/summary"
+// "http://localhost:5000/api/ai/flashcards"
+// "http://localhost:5000/api/ai/dictionary"
+// "http://localhost:5000/api/ai/concepts"
+// "http://localhost:5000/api/ai/knowledge-graph"
+
   const handleSummary = async (noteContent) => {
   try {
 
