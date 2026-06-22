@@ -150,7 +150,7 @@ const [editContent, setEditContent] =
     setLoading(true);
 
     const response = await axios.post(
-      "http://localhost:5000/api/ai/summary",
+      "https://neuronotes-backend-afri.onrender.com/api/ai/summary",
       {
         content: noteContent,
       },
@@ -182,7 +182,7 @@ const handleLogout = () => {
     setLoading(true);
 
     const response = await axios.post(
-      "http://localhost:5000/api/ai/flashcards",
+      "https://neuronotes-backend-afri.onrender.com/api/ai/flashcards",
       {
         content: noteContent,
       },
@@ -255,7 +255,7 @@ const handleDictionary = async () => {
     setLoading(true);
 
     const response = await axios.post(
-      "http://localhost:5000/api/ai/dictionary",
+      "https://neuronotes-backend-afri.onrender.com/api/ai/dictionary",
       {
         term,
       },
@@ -284,7 +284,7 @@ const handleConceptMap = async (noteContent) => {
     setLoading(true);
 
     const response = await axios.post(
-      "http://localhost:5000/api/ai/concepts",
+     "https://neuronotes-backend-afri.onrender.com/api/ai/concepts",
       {
         content: noteContent,
       }
@@ -318,7 +318,7 @@ const handleConceptMap = async (noteContent) => {
     try {
          setLoading(true);
       const response = await axios.post(
-        "http://localhost:5000/api/ai/knowledge-graph",
+        "https://neuronotes-backend-afri.onrender.com/api/ai/knowledge-graph",
         {
           content: noteContent,
         },
