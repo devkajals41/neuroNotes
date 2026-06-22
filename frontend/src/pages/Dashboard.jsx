@@ -318,7 +318,7 @@ const handleConceptMap = async (noteContent) => {
     try {
          setLoading(true);
       const response = await axios.post(
-        "http://localhost:5000/api/ai/knowledge-graph",
+        "https://neuronotes-backend-afri.onrender.com/api/ai/knowledge-graph",
         {
           content: noteContent,
         },
