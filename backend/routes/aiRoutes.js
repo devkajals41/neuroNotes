@@ -6,17 +6,18 @@ import {
   concepts,
   knowledgeGraph,
 } from "../controllers/aiController.js";
+import protect from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/summary", summarizeNote);
+router.post("/summary", protect, summarizeNote);
 
-router.post("/flashcards", flashcards);
+router.post("/flashcards", protect, flashcards);
 
-router.post("/dictionary", dictionary);
+router.post("/dictionary", protect, dictionary);
 
-router.post("/concepts", concepts);
+router.post("/concepts", protect, concepts);
 
-router.post("/knowledge-graph", knowledgeGraph);
+router.post("/knowledge-graph", protect, knowledgeGraph);
 
 export default router;

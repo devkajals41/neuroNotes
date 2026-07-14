@@ -1,64 +1,53 @@
-.auth-container{
+.auth-container {
+  min-height: 100vh;
 
-  min-height:100vh;
+  display: flex;
 
-  display:flex;
+  justify-content: center;
 
-  justify-content:center;
+  align-items: flex-start;
 
-  align-items:flex-start;
+  padding-top: 40px;
 
-  padding-top:40px;
+  position: relative;
 
-  position:relative;
+  background-size: cover;
 
-  background-size:cover;
-
-  background-position:center;
+  background-position: center;
 }
 
-.auth-container::before{
+.auth-container::before {
+  content: "";
 
-  content:"";
+  position: absolute;
 
-  position:absolute;
+  inset: 0;
 
-  inset:0;
+  background: rgba(255, 255, 255, 0.8);
 
-  background:
-    rgba(255,255,255,0.80);
-
-  z-index:1;
+  z-index: 1;
 }
-.auth-card{
+.auth-card {
+  width: 360px;
 
-  width:360px;
+  padding: 24px;
 
-  padding:24px;
+  border-radius: 24px;
 
-  border-radius:24px;
+  position: relative;
 
-  position:relative;
+  z-index: 2;
 
-  z-index:2;
+  background: rgba(255, 255, 255, 0.75);
 
-  background:
-    rgba(255,255,255,0.75);
+  backdrop-filter: blur(16px);
 
-  backdrop-filter:
-    blur(16px);
-
-  box-shadow:
-    0 10px 30px rgba(
-      0,0,0,.1
-    );
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
-.auth-card:hover{
+.auth-card:hover {
+  transform: translateY(-3px);
 
-  transform:
-    translateY(-3px);
-
-  transition:.3s;
+  transition: 0.3s;
 }
 
 .auth-title {
@@ -69,15 +58,14 @@
   margin-bottom: 8px;
 }
 
-.auth-input{
+.auth-input {
+  height: 48px;
 
-  height:48px;
+  padding: 0 16px;
 
-  padding:0 16px;
+  border-radius: 12px;
 
-  border-radius:12px;
-
-  margin-bottom:12px;
+  margin-bottom: 12px;
 }
 
 .auth-button {
@@ -108,7 +96,6 @@
   display: block;
   margin: 0 auto 15px;
 }
-
 
 .auth-subtitle {
   color: #94a3b8;

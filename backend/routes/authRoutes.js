@@ -2,10 +2,7 @@ import express from "express";
 
 console.log("AUTH ROUTES LOADED");
 
-import {
-  registerUser,
-  loginUser,
-} from "../controllers/authController.js";
+import { registerUser, loginUser } from "../controllers/authController.js";
 
 const router = express.Router();
 
@@ -19,7 +16,6 @@ router.get("/test", (req, res) => {
 
 // Register User
 router.post("/register", registerUser);
-
 
 // Login User
 router.post("/login", loginUser);

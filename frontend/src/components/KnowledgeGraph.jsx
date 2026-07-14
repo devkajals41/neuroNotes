@@ -1,56 +1,35 @@
-import ReactFlow, {
-  Background,
-  Controls,
-} from "reactflow";
+import ReactFlow, { Background, Controls } from "reactflow";
 
 import "reactflow/dist/style.css";
 
-function KnowledgeGraph({
-  graphData,
-}) {
+function KnowledgeGraph({ graphData }) {
   if (!graphData) return null;
 
-  const nodes =
-    graphData.nodes.map(
-      (node, index) => ({
-        id: node,
+  const nodes = graphData.nodes.map((node, index) => ({
+    id: node,
 
-        data: {
-          label: node,
-        },
+    data: {
+      label: node,
+    },
 
-        position: {
-          x:
-            100 +
-            (index % 3) * 250,
+    position: {
+      x: 100 + (index % 3) * 250,
 
-          y:
-            100 +
-            Math.floor(
-              index / 3
-            ) *
-              180,
-        },
-      })
-    );
+      y: 100 + Math.floor(index / 3) * 180,
+    },
+  }));
 
-  const edges =
-    graphData.edges.map(
-      (edge, index) => ({
-        id: `e${index}`,
+  const edges = graphData.edges.map((edge, index) => ({
+    id: `e${index}`,
 
-        source:
-          edge.source,
+    source: edge.source,
 
-        target:
-          edge.target,
+    target: edge.target,
 
-        label:
-          edge.label,
+    label: edge.label,
 
-        animated: true,
-      })
-    );
+    animated: true,
+  }));
 
   return (
     <div
@@ -59,11 +38,7 @@ function KnowledgeGraph({
         height: "600px",
       }}
     >
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        fitView
-      >
+      <ReactFlow nodes={nodes} edges={edges} fitView>
         <Background />
         <Controls />
       </ReactFlow>

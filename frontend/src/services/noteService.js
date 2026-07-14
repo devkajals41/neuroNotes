@@ -1,6 +1,13 @@
 import axios from "axios";
 
-const API_URL = "https://neuronotes-backend-afri.onrender.com/api/notes";
+// ==========================================
+// API CONFIGURATION FOR LOCAL VS PRODUCTION
+// ==========================================
+// To run locally on your PC:
+// Uncomment the LOCAL URL and comment the PRODUCTION URL.
+// ==========================================
+// const API_URL = "http://localhost:5000/api/notes"; // LOCAL URL
+const API_URL = "https://neuronotes-backend-afri.onrender.com/api/notes"; // PRODUCTION URL
 
 // Get all notes
 export const getNotes = async () => {
