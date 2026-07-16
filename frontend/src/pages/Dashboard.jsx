@@ -1,7 +1,6 @@
 import "./DashboardV2.css";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import ReactMarkdown from "react-markdown";
 import axios from "axios";
 import {
   getNotes,
@@ -21,7 +20,6 @@ import {
   FaProjectDiagram,
   FaNetworkWired,
 } from "react-icons/fa";
-import { FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { FaEdit } from "react-icons/fa";
@@ -73,10 +71,6 @@ function Dashboard() {
 
   const [editContent, setEditContent] = useState("");
 
-  useEffect(() => {
-    fetchNotes();
-  }, []);
-
   const fetchNotes = async () => {
     try {
       const data = await getNotes();
@@ -88,6 +82,28 @@ function Dashboard() {
       console.log(error.response?.data || error.message);
     }
   };
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadNotes = async () => {
+      try {
+        const data = await getNotes();
+
+        if (isMounted) {
+          setNotes(data.notes);
+        }
+      } catch (error) {
+        console.log(error.response?.data || error.message);
+      }
+    };
+
+    loadNotes();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const [showMenu, setShowMenu] = useState(false);
   useEffect(() => {
